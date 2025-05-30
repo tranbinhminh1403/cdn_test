@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
-function mountChatbot(container: HTMLElement) {
+function mount(container: HTMLElement) {
   createRoot(container).render(
     <StrictMode>
       <App />
@@ -11,20 +11,20 @@ function mountChatbot(container: HTMLElement) {
   );
 }
 
-// Mount normally if 'root' exists (direct visit)
-const rootEl = document.getElementById("root");
-if (rootEl) {
-  mountChatbot(rootEl);
+// 1. Standalone usage (for iframe or direct visit)
+const root = document.getElementById("root");
+if (root) {
+  mount(root);
 }
 
-// Expose as global widget
+// 2. Script-injected widget
 (window as any).ChatBotWidget = {
   init: ({ containerId = "chatbot-container" } = {}) => {
     const container = document.getElementById(containerId);
     if (container) {
-      mountChatbot(container);
+      mount(container);
     } else {
-      console.error(`Chatbot container with ID "${containerId}" not found.`);
+      console.error(`Chatbot container with id '${containerId}' not found.`);
     }
   },
 };
